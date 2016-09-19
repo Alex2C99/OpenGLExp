@@ -1,0 +1,24 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+# SharpDevelop 5.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenGLExp", "OpenGLExp\OpenGLExp.csproj", "{DC84AFC2-24BF-43F2-9007-C6D1C7E425C8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GLCapsule", "GLCapsule\GLCapsule.csproj", "{F7660A3F-2F2D-4E54-A5F7-039E69D45B4A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DC84AFC2-24BF-43F2-9007-C6D1C7E425C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC84AFC2-24BF-43F2-9007-C6D1C7E425C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC84AFC2-24BF-43F2-9007-C6D1C7E425C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC84AFC2-24BF-43F2-9007-C6D1C7E425C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7660A3F-2F2D-4E54-A5F7-039E69D45B4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7660A3F-2F2D-4E54-A5F7-039E69D45B4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7660A3F-2F2D-4E54-A5F7-039E69D45B4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7660A3F-2F2D-4E54-A5F7-039E69D45B4A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

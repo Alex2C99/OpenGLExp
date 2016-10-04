@@ -7,6 +7,7 @@
 using System;
 using NLog;
 using GLCapsule;
+using OpenTK.Graphics;
 
 namespace OpenGLExp
 {
@@ -19,7 +20,7 @@ namespace OpenGLExp
 			try
 			{
 				logger.Debug("App started");
-				using(var mainWin = new MainWindow())
+				using(var mainWin = new MainWindow(1024,768))
 				{
 				    logger.Debug("Main loop start");
 				    mainWin.Run(30,0);

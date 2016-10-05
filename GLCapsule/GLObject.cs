@@ -26,12 +26,6 @@ namespace GLCapsule
 		{
             Release = () => { return; };
 		}
-
-		~GLObject()
-		{
-		    if(null!=Release)
-		      Release();
-		}
 		
     #region IDisposable implementation
         public void Dispose()

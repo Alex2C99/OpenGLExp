@@ -12,7 +12,7 @@ namespace OpenGLExp
     /// <summary>
     /// Description of Cube.
     /// </summary>
-    public class Cube
+    public class Cube : IDisposable
     {
         private Vector3d location;
         private Quaterniond position;
@@ -36,5 +36,14 @@ namespace OpenGLExp
         {
             rotate(Quaterniond.FromAxisAngle(axis,angle));
         }
+
+        #region IDisposable implementation
+
+        public void Dispose()
+        {
+            model.Dispose();
+        }
+
+        #endregion
     }
 }

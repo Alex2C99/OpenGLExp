@@ -18,8 +18,8 @@ namespace GLCapsule
         
         public VertexArray()
         {
-            Release = () => GL.DeleteVertexArrays(1, ref handle);
             GL.GenVertexArrays(1,out handle);
+            Release = () => GL.DeleteVertexArrays(1, ref handle);
         }
         
         public void Bind()

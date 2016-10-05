@@ -18,8 +18,8 @@ namespace GLCapsule
       
         public VertexBuffer(Double[] data)
         {
-            Release = () => GL.DeleteBuffers(1, ref handle);
             GL.GenBuffers(1,out handle);
+            Release = () => GL.DeleteBuffers(1, ref handle);
             this.Bind();
             GL.BufferData(BufferTarget.ArrayBuffer,sizeof(Double)*data.Length,data,BufferUsageHint.StaticDraw);
             this.Unbind();

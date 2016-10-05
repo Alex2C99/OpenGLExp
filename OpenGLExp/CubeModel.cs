@@ -12,7 +12,7 @@ namespace OpenGLExp
     /// <summary>
     /// Description of CubeModel.
     /// </summary>
-    public class CubeModel
+    public class CubeModel : IDisposable
     {
         private static readonly Double[] data = {
 //           x   y   z   r  g  b
@@ -47,16 +47,27 @@ namespace OpenGLExp
             -1,  -1, 1,  1, 0, 1           
         };
               
+        private VertexArray vao;
+        
         public CubeModel()
         {
-            using(var vao = new VertexArray())
+            vao = new VertexArray();
+            vao.Bind();
+            using(var vbo = new VertexBuffer(data))
             {
-                vao.Bind();
-                using(var vbo = new VertexBuffer(data))
-                {
-                    
-                }
+
             }
+            vao.Unbind();
         }
+
+        #region IDisposable implementation
+
+        public void Dispose()
+        {
+            if(null!=vao)
+                vao.Dispose();
+        }
+
+        #endregion
     }
 }

@@ -21,6 +21,8 @@ namespace OpenGLExp
         private delegate void KeyAction(KeyboardKeyEventArgs e);
         private readonly Dictionary<Key,KeyAction> keys;
         
+        private Cube cube1;
+        
         public MainWindow(int w, int h)
             : base(w,h)
         {
@@ -33,12 +35,13 @@ namespace OpenGLExp
         {
             base.OnLoad(e);
             this.Title = "Hello OpenTK!";
-            GL.ClearColor(Color.CornflowerBlue);
+            cube1 = new Cube(new Vector3d(0,0,0),new Vector3d(1,0,0),MathHelper.Pi/4);
         }
         
         protected override void OnRenderFrame(FrameEventArgs e)
         {
             base.OnRenderFrame(e);
+            GL.ClearColor(Color.CornflowerBlue);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             this.SwapBuffers();
         }
@@ -49,6 +52,17 @@ namespace OpenGLExp
                keys[e.Key](e);
             else
                base.OnKeyDown(e);
+        }
+        
+        protected override void OnResize(EventArgs e)
+        {
+            GL.Viewport(0, 0, this.Width, this.Height);
+        }
+
+        public override void Dispose()
+        {
+            cube1.Dispose();
+            base.Dispose();
         }
     }
 }

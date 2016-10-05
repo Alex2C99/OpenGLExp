@@ -26,5 +26,10 @@ namespace GLCapsule
         {
             GL.BindVertexArray(handle);
         }
+        
+        public void Unbind()
+        {
+            GL.BindVertexArray(0);
+        }
     }
 }

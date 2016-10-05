@@ -22,6 +22,20 @@ namespace GLCapsule
             Release = () => GL.DeleteVertexArrays(1, ref handle);
         }
         
+        public void AddBuffer(VertexBuffer buf, params VertexAttribute[] attrs)
+        {
+            this.Bind();
+            buf.Bind()
+            foreach(VertexAttribute a in attrs)
+            {
+///                UInt32 idx = GL.GetAttribLocation()
+///                GL.VertexAttribIPointer();
+///                GL.EnableVertexAttribArray();
+            }
+            buf.Unbind();
+            this.Unbind();
+        }
+        
         public void Bind()
         {
             GL.BindVertexArray(handle);

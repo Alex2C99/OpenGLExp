@@ -6,6 +6,7 @@
  */
 using System;
 using GLCapsule;
+using OpenTK.Graphics.OpenGL;
 
 namespace OpenGLExp
 {
@@ -52,12 +53,27 @@ namespace OpenGLExp
         public CubeModel()
         {
             vao = new VertexArray();
-            vao.Bind();
             using(var vbo = new VertexBuffer(data))
             {
-
+                vao.AddBuffer(vbo, 
+                              new VertexAttribute 
+                              {
+                                  Name = "glVertex",
+                                  Size = 3,
+                                  Type = VertexAttribPointerType.Double,
+                                  Stride = sizeof(Double)*3,
+                                  Offset = 0
+                              },
+                              new VertexAttribute 
+                              {
+                                  Name = "glColor",
+                                  Size = 3,
+                                  Type = VertexAttribPointerType.Double,
+                                  Stride = sizeof(Double)*3,
+                                  Offset = sizeof(Double)*3,
+                              } 
+                             );
             }
-            vao.Unbind();
         }
 
         #region IDisposable implementation

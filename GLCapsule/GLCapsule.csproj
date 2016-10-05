@@ -51,6 +51,7 @@
     <Compile Include="GLObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VertexArray.cs" />
+    <Compile Include="VertexAttribute.cs" />
     <Compile Include="VertexBuffer.cs" />
   </ItemGroup>
   <ItemGroup>

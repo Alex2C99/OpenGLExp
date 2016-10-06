@@ -41,7 +41,8 @@ namespace OpenGLExp
 
         public void Dispose()
         {
-            model.Dispose();
+			if(null!=model)
+	            model.Dispose();
         }
 
         #endregion

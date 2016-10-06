@@ -13,13 +13,15 @@ namespace GLCapsule
     /// Description of VertexBuffer.
     /// </summary>
     public class VertexBuffer : GLObject
-    {
-        private UInt32 handle;
-      
+    {     
         public VertexBuffer(Double[] data)
         {
+            Int32 handle;
             GL.GenBuffers(1,out handle);
-            Release = () => GL.DeleteBuffers(1, ref handle);
+            if(ErrorCode.NoError != GL.GetError())
+                throw new GLCapsuleException("Buffer creation error");
+            this.Handle = handle;
+            Release = () => { Int32 h = this.Handle; GL.DeleteBuffers(1, ref h); };
             this.Bind();
             GL.BufferData(BufferTarget.ArrayBuffer,sizeof(Double)*data.Length,data,BufferUsageHint.StaticDraw);
             this.Unbind();
@@ -27,7 +29,7 @@ namespace GLCapsule
         
         public void Bind()
         {
-            GL.BindBuffer(BufferTarget.ArrayBuffer,handle);
+            GL.BindBuffer(BufferTarget.ArrayBuffer,this.Handle);
         }
         
         public void Unbind()

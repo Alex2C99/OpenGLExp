@@ -13,13 +13,15 @@ namespace GLCapsule
     /// Description of VertexArray.
     /// </summary>
     public class VertexArray : GLObject
-    {
-        private UInt32 handle;
-        
+    {        
         public VertexArray()
         {
+            Int32 handle;
             GL.GenVertexArrays(1,out handle);
-            Release = () => GL.DeleteVertexArrays(1, ref handle);
+            if(ErrorCode.NoError != GL.GetError())
+                throw new GLCapsuleException("Vertex array creation error");
+            this.Handle = handle;
+            Release = () => { Int32 h = this.Handle; GL.DeleteVertexArrays(1, ref h); };
         }
         
         public void AddBuffer(VertexBuffer buf, params VertexAttribute[] attrs)
@@ -36,7 +38,7 @@ namespace GLCapsule
         
         public void Bind()
         {
-            GL.BindVertexArray(handle);
+            GL.BindVertexArray(this.Handle);
         }
         
         public void Unbind()

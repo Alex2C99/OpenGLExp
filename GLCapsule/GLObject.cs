@@ -15,8 +15,10 @@ namespace GLCapsule
 	public class GLObject : IDisposable
 	{
 		private bool disposed;
-
-	    protected delegate void GLResourceRelease();
+		
+		protected delegate void GLResourceRelease();
+		
+		public Int32 Handle { get; protected set; }
 
         protected GLResourceRelease Release
         {
@@ -27,10 +29,11 @@ namespace GLCapsule
         public GLObject()
 		{
             Release = () => { return; };
+            this.Handle = -1;
 			disposed = false;
 		}
 
-		protected void virtual Dispose(bool disposing)
+		protected virtual void Dispose(bool disposing)
 		{
 			if(disposed)
 				return;

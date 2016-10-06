@@ -15,6 +15,23 @@ namespace OpenGLExp
     /// </summary>
     public class CubeModel : IDisposable
     {
+        
+        private static readonly string VERT_SHADER = @"
+#version 450 core
+void main(void)
+{
+   gl_Position = ;
+}
+        ";
+
+        private static readonly string FRAG_SHADER = @"
+#version 450 core
+void main(void)
+{
+   gl_Position = ;
+}
+        ";
+        
         private static readonly Double[] data = {
 //           x   y   z   r  g  b
             -1, -1,  1,  1, 0, 0,
@@ -49,6 +66,7 @@ namespace OpenGLExp
         };
               
         private VertexArray vao;
+        private ShaderProgram shaderProgram;
         
         public CubeModel()
         {
@@ -74,6 +92,8 @@ namespace OpenGLExp
                               } 
                              );
             }
+            Shader sh = new Shader(ShaderType.VertexShader,VERT_SHADER);
+            shaderProgram = new ShaderProgram();
         }
 
         #region IDisposable implementation

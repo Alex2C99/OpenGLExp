@@ -12,12 +12,8 @@ namespace GLCapsule
     /// <summary>
     /// Description of VertexAttribute.
     /// </summary>
-    public class VertexAttribute
-    {
-        public VertexAttribute()
-        {
-        }
-        
+    public struct VertexAttribute
+    {       
         public string Name { get; set; }
         public UInt32 Size { get; set; }
         public VertexAttribPointerType Type { get; set; } 

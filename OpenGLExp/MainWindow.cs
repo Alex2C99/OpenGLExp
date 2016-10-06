@@ -61,7 +61,8 @@ namespace OpenGLExp
 
         public override void Dispose()
         {
-            cube1.Dispose();
+            if(null!=cube1)
+                cube1.Dispose();
             base.Dispose();
         }
     }

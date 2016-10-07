@@ -6,6 +6,7 @@
  */
 using System;
 using OpenTK;
+using OpenTK.Graphics.OpenGL;
 
 namespace OpenGLExp
 {
@@ -27,14 +28,19 @@ namespace OpenGLExp
             model = new CubeModel();
         }
         
-        public void rotate(Quaterniond r)
+        public void Render(Matrix4d persp)
+        {
+            model.Draw(persp, Matrix4d.CreateFromQuaternion(position));
+        }
+        
+        public void Rotate(Quaterniond r)
         {
             position *= r;
         }
 
-        public void rotate(Vector3d axis, double angle)
+        public void Rotate(Vector3d axis, double angle)
         {
-            rotate(Quaterniond.FromAxisAngle(axis,angle));
+            Rotate(Quaterniond.FromAxisAngle(axis,angle));
         }
 
         #region IDisposable implementation

@@ -6,6 +6,7 @@
  */
 using System;
 using GLCapsule;
+using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
 namespace OpenGLExp
@@ -18,6 +19,9 @@ namespace OpenGLExp
         private static readonly string VERT_SHADER = @"
 #version 130
 
+uniform mat4 perspective;
+uniform mat4 model;
+
 in vec3 vPos;
 in vec3 vCol;
 out vec4 vs_color;
@@ -25,7 +29,7 @@ out vec4 vs_color;
 void main()
 {
    vs_color = vec4(vCol,1.0);
-   gl_Position = vec4(vPos, 1.0);
+   gl_Position = perspective*model*vec4(vPos, 1.0);
 }";
 
         private static readonly string FRAG_SHADER = @"
@@ -38,6 +42,8 @@ void main()
 {
    fs_color = vs_color;
 }";
+        
+        private static int VERTEX_ATTR_COUNT = 6;
         
         private static readonly Double[] data = {
 //           x   y   z   r  g  b
@@ -74,7 +80,7 @@ void main()
               
         private readonly VertexArray vao;
         private readonly ShaderProgram shaderProgram;
-        
+       
         public CubeModel()
         {
             vao = new VertexArray();
@@ -106,10 +112,23 @@ void main()
                               } 
                              );
             }
+           
+        }       
+        
+        public void Draw(Matrix4d persp, Matrix4d model)
+        {
+            vao.Bind();
+            shaderProgram.Use();
+            Int32 psp = GL.GetUniformLocation(shaderProgram.Handle,"perspective");
+            Int32 loc = GL.GetUniformLocation(shaderProgram.Handle,"model");
+            GL.UniformMatrix4(psp,false, ref persp);
+            GL.UniformMatrix4(loc,false, ref model);
+            GL.DrawArrays(PrimitiveType.Triangles,0,VERTEX_ATTR_COUNT);
+            shaderProgram.Unuse();
+            vao.Unbind();
         }
-
+        
         #region IDisposable implementation
-
         public void Dispose()
         {
             if(null!=shaderProgram)
@@ -117,7 +136,6 @@ void main()
             if(null!=vao)
                 vao.Dispose();
         }
-
         #endregion
     }
 }

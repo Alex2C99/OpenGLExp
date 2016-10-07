@@ -56,5 +56,10 @@ namespace GLCapsule
         {
             GL.UseProgram(this.Handle);
         }
+
+        public void Unuse()
+        {
+            GL.UseProgram(0);
+        }
     }
 }

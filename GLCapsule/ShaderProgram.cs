@@ -5,6 +5,7 @@
  * Time: 13:14
  */
 using System;
+using System.Collections.Generic;
 using OpenTK.Graphics.OpenGL;
 
 namespace GLCapsule
@@ -14,25 +15,24 @@ namespace GLCapsule
     /// </summary>
     public class ShaderProgram : GLObject
     {
+        List<Shader> shaders;
+        
         public ShaderProgram()
         {
             Int32 handle = GL.CreateProgram();
             if(0==handle)
                 throw new GLCapsuleException("Program creation error");
             Release = () => {Int32 h = this.Handle; GL.DeleteProgram(h); };
+            shaders = new List<Shader>();
         }
         
-        public ShaderProgram(Shader[] shaders)
-            : this()
+        public void AddShader(ShaderType type, string source)
         {
-            foreach(Shader sh in shaders)
-                AddShader(sh);
-        }
-        
-        public void AddShader(Shader shader)
-        {
+            var shader = new Shader(type,source);
             GL.AttachShader(this.Handle,shader.Handle);
+            shaders.Add(shader);
         }
+        
         
         public void Link()
         {
@@ -44,6 +44,10 @@ namespace GLCapsule
             {
                 this.Dispose();
                 throw new GLCapsuleException("Program linking error: "+log);
+            }
+            foreach(var sh in shaders)
+            {
+                GL.DetachShader(this.Handle,sh.Handle);
             }
         }
         

@@ -24,14 +24,14 @@ namespace GLCapsule
             Release = () => { Int32 h = this.Handle; GL.DeleteVertexArrays(1, ref h); };
         }
         
-        public void AddBuffer(VertexBuffer buf, params VertexAttribute[] attrs)
+        public void AddBuffer(VertexBuffer buf, ShaderProgram prog, params VertexAttribute[] attrs)
         {
             this.Bind();
             foreach(VertexAttribute a in attrs)
             {
-///                UInt32 idx = GL.GetAttribLocation()
-///                GL.VertexAttribIPointer();
-///                GL.EnableVertexAttribArray();
+                Int32 idx = GL.GetAttribLocation(prog.Handle,a.Name);
+                GL.EnableVertexAttribArray(idx);
+                GL.VertexAttribPointer(idx,a.Size,a.Type,a.Norm,a.Stride,a.Offset);
             }
             this.Unbind();
         }

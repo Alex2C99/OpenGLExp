@@ -15,22 +15,50 @@ namespace OpenGLExp
     /// </summary>
     public class CubeModel : IDisposable
     {
-        
+/*
         private static readonly string VERT_SHADER = @"
-#version 450 core
-void main(void)
+#version 130
+
+//in vec3 vPos;
+//in vec3 vCol;
+//out vec4 vs_color;
+
+void main()
 {
-   gl_Position = ;
-}
-        ";
+//   vs_color = vec4(vCol,1.0);
+   gl_Position = vec4(0.0, 0.0, 0.0, 1.0);
+}";
 
         private static readonly string FRAG_SHADER = @"
-#version 450 core
-void main(void)
+#version 130
+
+//in vec4 vs_color;
+//out vec4 color;
+
+void main()
 {
-   gl_Position = ;
+   color = vec4(0.0, 0.0, 0.0, 1.0);
 }
-        ";
+*/
+        
+        private static readonly string VERT_SHADER = @"
+#version 130
+
+
+void main()
+{
+   gl_Position = vec4(0.0, 0.0, 0.0, 1.0);
+}";
+
+        private static readonly string FRAG_SHADER = @"
+#version 130
+
+out vec4 fs_color;
+
+void main()
+{
+   fs_color = vec4(0.0, 0.0, 0.0, 1.0);
+}";
         
         private static readonly Double[] data = {
 //           x   y   z   r  g  b
@@ -65,18 +93,23 @@ void main(void)
             -1,  -1, 1,  1, 0, 1           
         };
               
-        private VertexArray vao;
-        private ShaderProgram shaderProgram;
+        private readonly VertexArray vao;
+        private readonly ShaderProgram shaderProgram;
         
         public CubeModel()
         {
             vao = new VertexArray();
+            shaderProgram = new ShaderProgram();
+            shaderProgram.AddShader(ShaderType.VertexShader,VERT_SHADER);
+            shaderProgram.AddShader(ShaderType.FragmentShader,FRAG_SHADER);
+            shaderProgram.Link();
+            
             using(var vbo = new VertexBuffer(data))
             {
-                vao.AddBuffer(vbo, 
+                vao.AddBuffer(vbo, shaderProgram, 
                               new VertexAttribute 
                               {
-                                  Name = "glVertex",
+                                  Name = "vPos",
                                   Size = 3,
                                   Type = VertexAttribPointerType.Double,
                                   Stride = sizeof(Double)*3,
@@ -84,7 +117,7 @@ void main(void)
                               },
                               new VertexAttribute 
                               {
-                                  Name = "glColor",
+                                  Name = "vCol",
                                   Size = 3,
                                   Type = VertexAttribPointerType.Double,
                                   Stride = sizeof(Double)*3,
@@ -92,14 +125,14 @@ void main(void)
                               } 
                              );
             }
-            Shader sh = new Shader(ShaderType.VertexShader,VERT_SHADER);
-            shaderProgram = new ShaderProgram();
         }
 
         #region IDisposable implementation
 
         public void Dispose()
         {
+            if(null!=shaderProgram)
+                shaderProgram.Dispose();
             if(null!=vao)
                 vao.Dispose();
         }

@@ -15,10 +15,10 @@ namespace GLCapsule
     public struct VertexAttribute
     {       
         public string Name { get; set; }
-        public UInt32 Size { get; set; }
+        public Int32 Size { get; set; }
         public VertexAttribPointerType Type { get; set; } 
         public bool Norm { get; set; }
-        public UInt32 Stride { get; set; }
-        public UInt32 Offset { get; set; }         
+        public Int32 Stride { get; set; }
+        public Int32 Offset { get; set; }         
     }
 }

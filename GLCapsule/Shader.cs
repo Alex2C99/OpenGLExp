@@ -17,8 +17,9 @@ namespace GLCapsule
         public Shader(ShaderType type, string source)
         {
             Int32 handle = GL.CreateShader(type);
-            if(0==handle)
+            if(!GL.IsShader(handle))
                 throw new GLCapsuleException("Shader creation error");
+            this.Handle = handle;
             Release = () => {Int32 h = this.Handle; GL.DeleteShader(h); };
             GL.ShaderSource(this.Handle, source);
             GL.CompileShader(this.Handle);

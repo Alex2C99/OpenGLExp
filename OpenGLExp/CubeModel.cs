@@ -15,49 +15,28 @@ namespace OpenGLExp
     /// </summary>
     public class CubeModel : IDisposable
     {
-/*
         private static readonly string VERT_SHADER = @"
 #version 130
 
-//in vec3 vPos;
-//in vec3 vCol;
-//out vec4 vs_color;
+in vec3 vPos;
+in vec3 vCol;
+out vec4 vs_color;
 
 void main()
 {
-//   vs_color = vec4(vCol,1.0);
-   gl_Position = vec4(0.0, 0.0, 0.0, 1.0);
+   vs_color = vec4(vCol,1.0);
+   gl_Position = vec4(vPos, 1.0);
 }";
 
         private static readonly string FRAG_SHADER = @"
 #version 130
 
-//in vec4 vs_color;
-//out vec4 color;
-
-void main()
-{
-   color = vec4(0.0, 0.0, 0.0, 1.0);
-}
-*/
-        
-        private static readonly string VERT_SHADER = @"
-#version 130
-
-
-void main()
-{
-   gl_Position = vec4(0.0, 0.0, 0.0, 1.0);
-}";
-
-        private static readonly string FRAG_SHADER = @"
-#version 130
-
+in vec4 vs_color;
 out vec4 fs_color;
 
 void main()
 {
-   fs_color = vec4(0.0, 0.0, 0.0, 1.0);
+   fs_color = vs_color;
 }";
         
         private static readonly Double[] data = {
@@ -113,7 +92,8 @@ void main()
                                   Size = 3,
                                   Type = VertexAttribPointerType.Double,
                                   Stride = sizeof(Double)*3,
-                                  Offset = 0
+                                  Offset = 0,
+                                  Norm = false
                               },
                               new VertexAttribute 
                               {
@@ -122,6 +102,7 @@ void main()
                                   Type = VertexAttribPointerType.Double,
                                   Stride = sizeof(Double)*3,
                                   Offset = sizeof(Double)*3,
+                                  Norm = false
                               } 
                              );
             }

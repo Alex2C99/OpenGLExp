@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenGLExp", "OpenGLExp\Open
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GLCapsule", "GLCapsule\GLCapsule.csproj", "{F7660A3F-2F2D-4E54-A5F7-039E69D45B4A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "shaderexp", "shaderexp\shaderexp.csproj", "{68E21936-99B6-48F0-B0DA-23EAB59C5899}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,5 +22,9 @@ Global
 		{F7660A3F-2F2D-4E54-A5F7-039E69D45B4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F7660A3F-2F2D-4E54-A5F7-039E69D45B4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F7660A3F-2F2D-4E54-A5F7-039E69D45B4A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68E21936-99B6-48F0-B0DA-23EAB59C5899}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68E21936-99B6-48F0-B0DA-23EAB59C5899}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68E21936-99B6-48F0-B0DA-23EAB59C5899}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68E21936-99B6-48F0-B0DA-23EAB59C5899}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

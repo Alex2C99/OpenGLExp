@@ -14,7 +14,7 @@ namespace GLCapsule
     /// </summary>
     public class VertexBuffer : GLObject
     {     
-        public VertexBuffer(Double[] data)
+        public VertexBuffer(float[] data)
         {
             Int32 handle;
             GL.GenBuffers(1,out handle);
@@ -23,7 +23,7 @@ namespace GLCapsule
             this.Handle = handle;
             Release = () => { Int32 h = this.Handle; GL.DeleteBuffers(1, ref h); };
             this.Bind();
-            GL.BufferData(BufferTarget.ArrayBuffer,sizeof(Double)*data.Length,data,BufferUsageHint.StaticDraw);
+            GL.BufferData(BufferTarget.ArrayBuffer,sizeof(float)*data.Length,data,BufferUsageHint.StreamDraw);
             this.Unbind();
         }
         

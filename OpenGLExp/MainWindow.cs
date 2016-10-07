@@ -22,7 +22,7 @@ namespace OpenGLExp
         private readonly Dictionary<Key,KeyAction> keys;
         
         private Cube cube1;
-        private Matrix4d perspective;
+        private Matrix4 perspective;
         
         public MainWindow(int w, int h)
             : base(w,h)
@@ -36,8 +36,8 @@ namespace OpenGLExp
         {
             base.OnLoad(e);
             this.Title = "Hello OpenTK!";
-            perspective = Matrix4d.CreatePerspectiveFieldOfView(MathHelper.PiOver2, 16f / 9, 0.1f, 100f);
-            cube1 = new Cube(new Vector3d(0,0,0),new Vector3d(1,0,0),MathHelper.Pi/4);
+            perspective = Matrix4.CreatePerspectiveFieldOfView(MathHelper.PiOver2, 16f / 9, 0.1f, 10.0f);
+            cube1 = new Cube(new Vector3(1,1,1),new Vector3(1,0,0),MathHelper.Pi/4);
         }
         
         protected override void OnRenderFrame(FrameEventArgs e)
@@ -52,7 +52,7 @@ namespace OpenGLExp
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
             base.OnUpdateFrame(e);
-            System.Threading.Thread.Sleep(500);
+//            System.Threading.Thread.Sleep(500);
         }
         
         protected override void OnKeyDown(KeyboardKeyEventArgs e)

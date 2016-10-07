@@ -15,32 +15,32 @@ namespace OpenGLExp
     /// </summary>
     public class Cube : IDisposable
     {
-        private Vector3d location;
-        private Quaterniond position;
+        private Vector3 location;
+        private Quaternion position;
         private double scale;
         private readonly CubeModel model;
 
-        public Cube(Vector3d lc, Vector3d axis, double angle, double sc=1)
+        public Cube(Vector3 lc, Vector3 axis, float angle, float sc=1)
         {
             location = lc;
             scale = sc;
-            position = Quaterniond.FromAxisAngle(axis,angle);
+            position = Quaternion.FromAxisAngle(axis,angle);
             model = new CubeModel();
         }
         
-        public void Render(Matrix4d persp)
+        public void Render(Matrix4 persp)
         {
-            model.Draw(persp, Matrix4d.CreateFromQuaternion(position));
+            model.Draw(persp, Matrix4.CreateFromQuaternion(position));
         }
         
-        public void Rotate(Quaterniond r)
+        public void Rotate(Quaternion r)
         {
             position *= r;
         }
 
-        public void Rotate(Vector3d axis, double angle)
+        public void Rotate(Vector3 axis, float angle)
         {
-            Rotate(Quaterniond.FromAxisAngle(axis,angle));
+            Rotate(Quaternion.FromAxisAngle(axis,angle));
         }
 
         #region IDisposable implementation

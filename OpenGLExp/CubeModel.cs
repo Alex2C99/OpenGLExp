@@ -17,10 +17,10 @@ namespace OpenGLExp
     public class CubeModel : IDisposable
     {
         private static readonly string VERT_SHADER = @"
-#version 130
+#version 450 core
 
-uniform mat4 perspective;
-uniform mat4 model;
+uniform mat4 proj;
+
 
 in vec3 vPos;
 in vec3 vCol;
@@ -29,11 +29,11 @@ out vec4 vs_color;
 void main()
 {
    vs_color = vec4(vCol,1.0);
-   gl_Position = perspective*model*vec4(vPos, 1.0);
+   gl_Position = proj*vec4(vPos, 1.0);
 }";
 
         private static readonly string FRAG_SHADER = @"
-#version 130
+#version 450 core
 
 in vec4 vs_color;
 out vec4 fs_color;
@@ -43,9 +43,9 @@ void main()
    fs_color = vs_color;
 }";
         
-        private static int VERTEX_ATTR_COUNT = 6;
+        private static int VERTEX_ATTR_COUNT = 24;
         
-        private static readonly Double[] data = {
+        private static readonly float[] data = {
 //           x   y   z   r  g  b
             -1, -1,  1,  1, 0, 0,
              1, -1,  1,  0, 1, 0,
@@ -96,18 +96,18 @@ void main()
                               {
                                   Name = "vPos",
                                   Size = 3,
-                                  Type = VertexAttribPointerType.Double,
-                                  Stride = sizeof(Double)*3,
+                                  Type = VertexAttribPointerType.Float,
+                                  Stride = sizeof(float)*3,
                                   Offset = 0,
                                   Norm = false
                               },
-                              new VertexAttribute 
+                              new VertexAttribute
                               {
                                   Name = "vCol",
                                   Size = 3,
-                                  Type = VertexAttribPointerType.Double,
-                                  Stride = sizeof(Double)*3,
-                                  Offset = sizeof(Double)*3,
+                                  Type = VertexAttribPointerType.Float,
+                                  Stride = sizeof(float)*3,
+                                  Offset = sizeof(float)*3,
                                   Norm = false
                               } 
                              );
@@ -115,14 +115,14 @@ void main()
            
         }       
         
-        public void Draw(Matrix4d persp, Matrix4d model)
+        public void Draw(Matrix4 persp, Matrix4 model)
         {
             vao.Bind();
             shaderProgram.Use();
-            Int32 psp = GL.GetUniformLocation(shaderProgram.Handle,"perspective");
-            Int32 loc = GL.GetUniformLocation(shaderProgram.Handle,"model");
+            Int32 psp = GL.GetUniformLocation(shaderProgram.Handle,"proj");
+//            Int32 loc = GL.GetUniformLocation(shaderProgram.Handle,"model");
             GL.UniformMatrix4(psp,false, ref persp);
-            GL.UniformMatrix4(loc,false, ref model);
+//            GL.UniformMatrix4(loc,false, ref model);
             GL.DrawArrays(PrimitiveType.Triangles,0,VERTEX_ATTR_COUNT);
             shaderProgram.Unuse();
             vao.Unbind();

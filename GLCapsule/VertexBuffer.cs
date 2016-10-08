@@ -23,7 +23,7 @@ namespace GLCapsule
             this.Handle = handle;
             Release = () => { Int32 h = this.Handle; GL.DeleteBuffers(1, ref h); };
             this.Bind();
-            GL.BufferData(BufferTarget.ArrayBuffer,sizeof(float)*data.Length,data,BufferUsageHint.StreamDraw);
+            GL.BufferData(BufferTarget.ArrayBuffer,sizeof(float)*data.Length,data,BufferUsageHint.StaticDraw);
             this.Unbind();
         }
         

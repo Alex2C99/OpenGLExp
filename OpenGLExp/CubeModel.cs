@@ -20,16 +20,16 @@ namespace OpenGLExp
 #version 450 core
 
 uniform mat4 proj;
+uniform mat4 mdl;
 
-
-in vec3 vPos;
-in vec3 vCol;
+attribute vec3 vPos;
+attribute vec3 vCol;
 out vec4 vs_color;
 
 void main()
 {
    vs_color = vec4(vCol,1.0);
-   gl_Position = proj*vec4(vPos, 1.0);
+   gl_Position = proj*mdl*vec4(vPos, 1.0);
 }";
 
         private static readonly string FRAG_SHADER = @"
@@ -43,39 +43,18 @@ void main()
    fs_color = vs_color;
 }";
         
-        private static int VERTEX_ATTR_COUNT = 24;
+        private const int VERTEX_ATTR_COUNT = 8;
         
         private static readonly float[] data = {
 //           x   y   z   r  g  b
-            -1, -1,  1,  1, 0, 0,
-             1, -1,  1,  0, 1, 0,
-             1,  1,  1,  0, 0, 1,
-            -1,  1,  1,  1, 1, 1,
-
-             1, -1,  1,  0, 1, 1,
-             1, -1, -1,  0, 1, 1,
-             1,  1, -1,  1, 1, 0,
-             1,  1,  1,  1, 0, 1,
-
-             1, -1, -1,  1, 0, 0,
-            -1, -1, -1,  0, 1, 0,
-            -1,  1, -1,  0, 0, 1,
-             1,  1, -1,  1, 1, 1,
-
-            -1, -1, -1,  0, 1, 1,
-            -1, -1,  1,  0, 1, 1,
-            -1,  1,  1,  1, 1, 0,
-            -1,  1, -1,  1, 0, 1,
-
-            -1,  1,  1,  1, 0, 0,
-             1,  1,  1,  0, 1, 0,
-             1,  1, -1,  0, 0, 1,
-            -1,  1, -1,  1, 1, 1,
-            
-            -1, -1, -1,  0, 1, 1,
-             1, -1, -1,  0, 1, 1,
-             1,  -1, 1,  1, 1, 0,
-            -1,  -1, 1,  1, 0, 1           
+            -1, -1, -1,  1, 0, 0,
+            -1, -1,  1,  0, 1, 0,
+             1, -1,  1,  0, 0, 1,
+             1, -1, -1,  1, 1, 1,
+            -1,  1, -1,  0, 1, 1,
+            -1,  1,  1,  0, 1, 1,
+             1,  1,  1,  1, 1, 0,
+             1,  1, -1,  1, 0, 1,
         };
               
         private readonly VertexArray vao;
@@ -97,19 +76,20 @@ void main()
                                   Name = "vPos",
                                   Size = 3,
                                   Type = VertexAttribPointerType.Float,
-                                  Stride = sizeof(float)*3,
+                                  Stride = sizeof(float)*6,
                                   Offset = 0,
                                   Norm = false
-                              },
-                              new VertexAttribute
+                              }
+                              , new VertexAttribute
                               {
                                   Name = "vCol",
                                   Size = 3,
                                   Type = VertexAttribPointerType.Float,
-                                  Stride = sizeof(float)*3,
+                                  Stride = sizeof(float)*6,
                                   Offset = sizeof(float)*3,
                                   Norm = false
-                              } 
+                              }
+ 
                              );
             }
            
@@ -120,10 +100,10 @@ void main()
             vao.Bind();
             shaderProgram.Use();
             Int32 psp = GL.GetUniformLocation(shaderProgram.Handle,"proj");
-//            Int32 loc = GL.GetUniformLocation(shaderProgram.Handle,"model");
+            Int32 mdl = GL.GetUniformLocation(shaderProgram.Handle,"mdl");
             GL.UniformMatrix4(psp,false, ref persp);
-//            GL.UniformMatrix4(loc,false, ref model);
-            GL.DrawArrays(PrimitiveType.Triangles,0,VERTEX_ATTR_COUNT);
+            GL.UniformMatrix4(mdl,false, ref model);
+            GL.DrawArrays(PrimitiveType.Quads,0,VERTEX_ATTR_COUNT);
             shaderProgram.Unuse();
             vao.Unbind();
         }

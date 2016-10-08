@@ -27,12 +27,14 @@ namespace GLCapsule
         public void AddBuffer(VertexBuffer buf, ShaderProgram prog, params VertexAttribute[] attrs)
         {
             this.Bind();
+            buf.Bind();
             foreach(VertexAttribute a in attrs)
             {
                 Int32 idx = GL.GetAttribLocation(prog.Handle,a.Name);
-                GL.EnableVertexAttribArray(idx);
                 GL.VertexAttribPointer(idx,a.Size,a.Type,a.Norm,a.Stride,a.Offset);
+                GL.EnableVertexAttribArray(idx);
             }
+            buf.Unbind();
             this.Unbind();
         }
         

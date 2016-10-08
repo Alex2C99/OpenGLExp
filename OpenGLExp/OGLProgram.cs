@@ -21,7 +21,7 @@ namespace OpenGLExp
 				using(var mainWin = new MainWindow(1024,768))
 				{
 				    logger.Debug("Main loop start");
-				    mainWin.Run(30,0);
+				    mainWin.Run(120,60);
                     logger.Debug("Main loop stop");
 				}
 			}

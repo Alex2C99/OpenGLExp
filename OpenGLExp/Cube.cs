@@ -25,12 +25,13 @@ namespace OpenGLExp
             location = lc;
             scale = sc;
             position = Quaternion.FromAxisAngle(axis,angle);
+            position.Normalize();
             model = new CubeModel();
         }
         
         public void Render(Matrix4 persp)
-        {
-            model.Draw(persp, Matrix4.CreateFromQuaternion(position));
+        {        	
+        	model.Draw(persp, Matrix4.CreateFromQuaternion(position)*Matrix4.CreateTranslation(location));
         }
         
         public void Rotate(Quaternion r)
@@ -40,7 +41,9 @@ namespace OpenGLExp
 
         public void Rotate(Vector3 axis, float angle)
         {
-            Rotate(Quaternion.FromAxisAngle(axis,angle));
+        	Quaternion r = Quaternion.FromAxisAngle(axis,angle);
+        	r.Normalize();
+            Rotate(r);
         }
 
         #region IDisposable implementation

@@ -36,14 +36,14 @@ namespace OpenGLExp
         {
             base.OnLoad(e);
             this.Title = "Hello OpenTK!";
-            perspective = Matrix4.CreatePerspectiveFieldOfView(MathHelper.PiOver2, 16f / 9, 0.1f, 10.0f);
-            cube1 = new Cube(new Vector3(1,1,1),new Vector3(1,0,0),MathHelper.Pi/4);
+            cube1 = new Cube(new Vector3(0,0,-4),new Vector3(1,0,0),0);
+            GL.Enable(EnableCap.DepthTest);
+            GL.ClearColor(Color.CornflowerBlue);
         }
         
         protected override void OnRenderFrame(FrameEventArgs e)
         {
             base.OnRenderFrame(e);
-            GL.ClearColor(Color.CornflowerBlue);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             cube1.Render(perspective);
             this.SwapBuffers();
@@ -52,7 +52,7 @@ namespace OpenGLExp
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
             base.OnUpdateFrame(e);
-//            System.Threading.Thread.Sleep(500);
+            cube1.Rotate(new Vector3(0f,1f,-1.5f),MathHelper.Pi/180);
         }
         
         protected override void OnKeyDown(KeyboardKeyEventArgs e)
@@ -66,6 +66,7 @@ namespace OpenGLExp
         protected override void OnResize(EventArgs e)
         {
             GL.Viewport(0, 0, this.Width, this.Height);
+            perspective = Matrix4.CreatePerspectiveFieldOfView(MathHelper.PiOver2, (float)this.Width / this.Height, 1.0f, 100.0f);
         }
 
         public override void Dispose()

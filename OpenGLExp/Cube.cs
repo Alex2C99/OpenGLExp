@@ -15,42 +15,34 @@ namespace OpenGLExp
     /// </summary>
     public class Cube : IDisposable
     {
-        private Matrix4 location;
-        private Matrix4 position;
-        private double scale;
+        private Matrix4 modelView;
         private readonly CubeModel model;
         private readonly bool ownModel;
 
         public Cube(Vector3 lc, Vector3 axis, float angle, float sc=1)
         {
-            location = Matrix4.CreateTranslation(lc);
-            scale = sc;
-            position = Matrix4.CreateFromAxisAngle(axis,angle);
-            position.Normalize();
+            modelView = Matrix4.CreateFromAxisAngle(axis,angle) * Matrix4.CreateTranslation(lc) * Matrix4.CreateScale(sc);;
+            modelView.Normalize();
             model = new CubeModel();
             ownModel = true;
         }
         
         public Cube(CubeModel mdl, Vector3 lc, Vector3 axis, float angle, float sc=1)
         {
-            location = Matrix4.CreateTranslation(lc);;
-            scale = sc;
-            position = Matrix4.CreateFromAxisAngle(axis,angle);
-            position.Normalize();
+            modelView = Matrix4.CreateFromAxisAngle(axis,angle) * Matrix4.CreateTranslation(lc) * Matrix4.CreateScale(sc);;
             model = mdl;
             ownModel = false;
         }
 
         public void Render(Matrix4 persp)
         {        	
-        	model.Draw(persp, position*location);
+        	model.Draw(persp, modelView);
         }
         
         public void Rotate(Vector3 axis, float angle)
         {
         	Matrix4 r = Matrix4.CreateFromAxisAngle(axis,angle);
-        	r.Normalize();
-        	position *= r;
+        	modelView = r*modelView;
         }
 
         #region IDisposable implementation

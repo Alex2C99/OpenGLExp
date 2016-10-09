@@ -41,8 +41,7 @@ namespace OpenGLExp
         
         public void Rotate(Vector3 axis, float angle)
         {
-        	Matrix4 r = Matrix4.CreateFromAxisAngle(axis,angle);
-        	modelView = r*modelView;
+        	modelView = Matrix4.CreateFromAxisAngle(axis,angle)*modelView;
         }
 
         #region IDisposable implementation

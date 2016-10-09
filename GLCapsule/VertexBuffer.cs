@@ -16,11 +16,10 @@ namespace GLCapsule
     {     
         public VertexBuffer(float[] data)
         {
-            Int32 handle;
-            GL.GenBuffers(1,out handle);
-            if(ErrorCode.NoError != GL.GetError())
+            
+            this.Handle = GL.GenBuffer();
+            if(ErrorCode.NoError!=GL.GetError())
                 throw new GLCapsuleException("Buffer creation error");
-            this.Handle = handle;
             Release = () => { Int32 h = this.Handle; GL.DeleteBuffers(1, ref h); };
             this.Bind();
             GL.BufferData(BufferTarget.ArrayBuffer,sizeof(float)*data.Length,data,BufferUsageHint.StaticDraw);

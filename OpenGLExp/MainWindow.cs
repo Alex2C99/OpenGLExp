@@ -42,6 +42,8 @@ namespace OpenGLExp
             cube1 = new Cube(model, new Vector3(-0.5f,-0.5f,-10f),new Vector3(0,1,0.1f),0);
             cube2 = new Cube(model, new Vector3(2f,1f,-25f),new Vector3(-0.2f,-0.3f,-0.5f),0);
             GL.Enable(EnableCap.DepthTest);
+            GL.Enable(EnableCap.Texture2D);
+            GL.Hint(HintTarget.PerspectiveCorrectionHint, HintMode.Nicest);
             GL.ClearColor(Color.CornflowerBlue);
         }
         

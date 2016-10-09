@@ -16,11 +16,9 @@ namespace GLCapsule
     {        
         public VertexArray()
         {
-            Int32 handle;
-            GL.GenVertexArrays(1,out handle);
-            if(ErrorCode.NoError != GL.GetError())
+            this.Handle = GL.GenVertexArray();
+            if(ErrorCode.NoError!=GL.GetError())
                 throw new GLCapsuleException("Vertex array creation error");
-            this.Handle = handle;
             Release = () => { Int32 h = this.Handle; GL.DeleteVertexArrays(1, ref h); };
         }
         

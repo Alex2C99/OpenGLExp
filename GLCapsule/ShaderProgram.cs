@@ -19,10 +19,9 @@ namespace GLCapsule
         
         public ShaderProgram()
         {
-            Int32 handle = GL.CreateProgram();
-            if(!GL.IsProgram(handle))
+            this.Handle = GL.CreateProgram();
+            if(ErrorCode.NoError!=GL.GetError())
                 throw new GLCapsuleException("Program creation error");
-            this.Handle = handle;
             Release = () => {Int32 h = this.Handle; GL.DeleteProgram(h); };
             shaders = new List<Shader>();
         }

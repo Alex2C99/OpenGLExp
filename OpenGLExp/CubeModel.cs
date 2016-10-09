@@ -35,26 +35,28 @@ void main()
         private static readonly string FRAG_SHADER = @"
 #version 450 core
 
+uniform vec3 clrs[6];
+
 in vec4 vs_color;
 out vec4 fs_color;
 
 void main()
 {
-   fs_color = vs_color;
+   fs_color = vec4(clrs[gl_PrimitiveID],1.0);
 }";
         
         private const int VERTEX_ATTR_COUNT = 8;
         
         private static readonly float[] data = {
 //           x   y   z   r  g  b
-            -1, -1, -1,  1, 0, 0,
-            -1, -1,  1,  0, 1, 0,
-             1, -1,  1,  0, 0, 1,
-             1, -1, -1,  1, 1, 1,
-            -1,  1, -1,  0, 1, 1,
-            -1,  1,  1,  0, 1, 1,
-             1,  1,  1,  1, 1, 0,
-             1,  1, -1,  1, 0, 1,
+            -1, -1, -1,
+            -1, -1,  1,
+             1, -1,  1,
+             1, -1, -1,
+            -1,  1, -1,
+            -1,  1,  1,
+             1,  1,  1,
+             1,  1, -1,
         };
         
         private static readonly UInt32[] indexes = {
@@ -64,6 +66,15 @@ void main()
              0,4,5,1,
              4,0,3,7,
              1,5,6,2
+        };
+        
+        private static readonly float[] colors = {
+        	1,0,0,
+        	0,1,0,
+        	0,0,1,
+        	1,1,0,
+        	1,0,1,
+        	0,1,1
         };
               
         private readonly VertexArray vao;
@@ -85,20 +96,10 @@ void main()
                                   Name = "vPos",
                                   Size = 3,
                                   Type = VertexAttribPointerType.Float,
-                                  Stride = sizeof(float)*6,
+                                  Stride = 0,
                                   Offset = 0,
                                   Norm = false
                               }
-                              , new VertexAttribute
-                              {
-                                  Name = "vCol",
-                                  Size = 3,
-                                  Type = VertexAttribPointerType.Float,
-                                  Stride = sizeof(float)*6,
-                                  Offset = sizeof(float)*3,
-                                  Norm = false
-                              }
- 
                              );
             }
            
@@ -110,8 +111,10 @@ void main()
             shaderProgram.Use();
             Int32 psp = GL.GetUniformLocation(shaderProgram.Handle,"proj");
             Int32 mdl = GL.GetUniformLocation(shaderProgram.Handle,"mdl");
+            Int32 clrs = GL.GetUniformLocation(shaderProgram.Handle,"clrs");
             GL.UniformMatrix4(psp,false, ref persp);
             GL.UniformMatrix4(mdl,false, ref model);
+            GL.Uniform3(clrs,colors.Length,colors);
             GL.DrawElements(PrimitiveType.Quads,24,DrawElementsType.UnsignedInt,indexes);
             shaderProgram.Unuse();
             vao.Unbind();

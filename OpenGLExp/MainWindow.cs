@@ -21,7 +21,9 @@ namespace OpenGLExp
         private delegate void KeyAction(KeyboardKeyEventArgs e);
         private readonly Dictionary<Key,KeyAction> keys;
         
+        private CubeModel model;
         private Cube cube1;
+        private Cube cube2;
         private Matrix4 perspective;
         
         public MainWindow(int w, int h)
@@ -36,7 +38,9 @@ namespace OpenGLExp
         {
             base.OnLoad(e);
             this.Title = "Hello OpenTK!";
-            cube1 = new Cube(new Vector3(0,0,-4),new Vector3(1,0,0),0);
+            model = new CubeModel();
+            cube1 = new Cube(model, new Vector3(-0.5f,0,-4),new Vector3(1,0,0),0);
+            cube2 = new Cube(model, new Vector3(3.5f,0,-10),new Vector3(1,0,0),0);
             GL.Enable(EnableCap.DepthTest);
             GL.ClearColor(Color.CornflowerBlue);
         }
@@ -46,13 +50,15 @@ namespace OpenGLExp
             base.OnRenderFrame(e);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             cube1.Render(perspective);
+            cube2.Render(perspective);
             this.SwapBuffers();
         }
         
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
             base.OnUpdateFrame(e);
-            cube1.Rotate(new Vector3(0f,1f,-1.5f),MathHelper.Pi/180);
+            cube1.Rotate(new Vector3(1f,0.1f,1f),MathHelper.Pi/180);
+            cube2.Rotate(new Vector3(-1f,-0.1f,-1f),MathHelper.Pi/180);
         }
         
         protected override void OnKeyDown(KeyboardKeyEventArgs e)
@@ -73,6 +79,10 @@ namespace OpenGLExp
         {
             if(null!=cube1)
                 cube1.Dispose();
+            if(null!=cube2)
+                cube2.Dispose();
+            if(null!=model)
+            	model.Dispose();
             base.Dispose();
         }
     }

@@ -19,6 +19,7 @@ namespace OpenGLExp
         private Quaternion position;
         private double scale;
         private readonly CubeModel model;
+        private bool ownModel;
 
         public Cube(Vector3 lc, Vector3 axis, float angle, float sc=1)
         {
@@ -27,8 +28,19 @@ namespace OpenGLExp
             position = Quaternion.FromAxisAngle(axis,angle);
             position.Normalize();
             model = new CubeModel();
+            ownModel = true;
         }
         
+        public Cube(CubeModel mdl, Vector3 lc, Vector3 axis, float angle, float sc=1)
+        {
+            location = lc;
+            scale = sc;
+            position = Quaternion.FromAxisAngle(axis,angle);
+            position.Normalize();
+            model = mdl;
+            ownModel = false;
+        }
+
         public void Render(Matrix4 persp)
         {        	
         	model.Draw(persp, Matrix4.CreateFromQuaternion(position)*Matrix4.CreateTranslation(location));
@@ -50,7 +62,7 @@ namespace OpenGLExp
 
         public void Dispose()
         {
-			if(null!=model)
+			if(ownModel && null!=model)
 	            model.Dispose();
         }
 

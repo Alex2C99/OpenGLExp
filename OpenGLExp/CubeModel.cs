@@ -56,6 +56,15 @@ void main()
              1,  1,  1,  1, 1, 0,
              1,  1, -1,  1, 0, 1,
         };
+        
+        private static readonly UInt32[] indexes = {
+             0,1,2,3,
+             7,6,5,4,
+             7,3,2,6,
+             0,4,5,1,
+             4,0,3,7,
+             1,5,6,2
+        };
               
         private readonly VertexArray vao;
         private readonly ShaderProgram shaderProgram;
@@ -103,7 +112,7 @@ void main()
             Int32 mdl = GL.GetUniformLocation(shaderProgram.Handle,"mdl");
             GL.UniformMatrix4(psp,false, ref persp);
             GL.UniformMatrix4(mdl,false, ref model);
-            GL.DrawArrays(PrimitiveType.Quads,0,VERTEX_ATTR_COUNT);
+            GL.DrawElements(PrimitiveType.Quads,24,DrawElementsType.UnsignedInt,indexes);
             shaderProgram.Unuse();
             vao.Unbind();
         }

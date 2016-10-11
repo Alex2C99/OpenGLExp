@@ -111,6 +111,9 @@ void main()
        
         public CubeModel()
         {
+            
+            ObjFile of = new ObjFile("cube.3dobj");
+            
             vao = new VertexArray();
             shaderProgram = new ShaderProgram();
             shaderProgram.AddShader(ShaderType.VertexShader,VERT_SHADER);

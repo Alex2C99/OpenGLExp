@@ -20,6 +20,8 @@ namespace GLCapsule
         
         Logger logger = LogManager.GetCurrentClassLogger();
         
+        private readonly char[] DELIM = {' ','\t','\r','\n'};
+        
         private class VertexEnumerator : IEnumerator<Vertex>
         {
             
@@ -67,6 +69,7 @@ namespace GLCapsule
                 this.vi = vi;
                 this.ti = ti;
                 this.ni = ni;
+                this.VNumber = 0;
             }
             
             public uint Vi { get { return vi; } }
@@ -74,13 +77,15 @@ namespace GLCapsule
             public uint Ti { get { return ti; } }
 
             public uint Ni { get { return ni; } }
+
+            public uint VNumber  { get; set; }
         }
 
         private class ObjFloatArray
         {
             private readonly float[] data;
             
-            ObjFloatArray(float[] dt)
+            public ObjFloatArray(float[] dt)
             {
                 data = new float[dt.Length];
                 dt.CopyTo(data,0);
@@ -93,7 +98,7 @@ namespace GLCapsule
         {
             private readonly ObjIndex[] data;
             
-            ObjIndexArray(ObjIndex[] dt)
+            public ObjIndexArray(ObjIndex[] dt)
             {
                 data = new ObjIndex[dt.Length];
                 dt.CopyTo(data,0);
@@ -112,17 +117,28 @@ namespace GLCapsule
 
         public ObjFile(string fn)
         {
+            
+            faces = new List<ObjIndexArray>();
+            vertexes = new List<ObjFloatArray>();
+            textures = new List<ObjFloatArray>();
+            normals = new List<ObjFloatArray>();
+            
+            parseMethods = new Dictionary<string, ParseString>();
             parseMethods["v"] = ParseVertex;
             parseMethods["vt"] = ParseTexture;
             parseMethods["vn"] = ParseNormal;
             parseMethods["f"] = ParseFace;
             
-            string str;
+            string str = "";
             using(var fi = new StreamReader(fn))
             {
-                while(null!=(str = fi.ReadLine().Trim(' ','\t','\r','\n')))
+                while(!fi.EndOfStream)
                 {
-                    string key = str.Split(' ','\t')[0].Trim(' ','\t','\r','\n');
+                    str = fi.ReadLine().Trim();
+                    str = DelComment(str);
+                    if(str.Length==0)
+                        continue;
+                    string key = str.Split(DELIM,StringSplitOptions.RemoveEmptyEntries)[0].Trim();
                     if(parseMethods.ContainsKey(key))
                         parseMethods[key](str);
                     else
@@ -146,23 +162,78 @@ namespace GLCapsule
         
         private void ParseVertex(string s)
         {
-            
+            string[] arr = s.Split(DELIM,StringSplitOptions.RemoveEmptyEntries);
+            if(arr.Length<4)
+            {
+                logger.Error("Vertex data too small");
+                return;
+            }
+            vertexes.Add(new ObjFloatArray(ConvertArrayToFloat(arr,1)));
         }
 
         private void ParseTexture(string s)
         {
-            
+            string[] arr = s.Split(DELIM,StringSplitOptions.RemoveEmptyEntries);
+            if(arr.Length<3)
+            {
+                logger.Error("Texture data too small");
+                return;
+            }
+            textures.Add(new ObjFloatArray(ConvertArrayToFloat(arr,1)));
         }
         
         private void ParseNormal(string s)
         {
-            
+            string[] arr = s.Split(DELIM,StringSplitOptions.RemoveEmptyEntries);
+            if(arr.Length<4)
+            {
+                logger.Error("Normal data too small");
+                return;
+            }
+            normals.Add(new ObjFloatArray(ConvertArrayToFloat(arr,1)));
         }
         
         private void ParseFace(string s)
         {
+            string[] arr = s.Split(DELIM,StringSplitOptions.RemoveEmptyEntries);
+            if(arr.Length<4)
+            {
+                logger.Error("Facet data too small");
+                return;
+            }
+            faces.Add(new ObjIndexArray(ConvertArrayToIndex(arr,1)));
             
         }
+        
+        private static string DelComment(string s)
+        {
+            return (s.IndexOf('#')!=-1) ? s.Substring(0,s.IndexOf('#')).Trim() : s;
+        }
+        
+        private static float[] ConvertArrayToFloat(string[] arr, uint idx)
+        {
+            float[] dt = new float[arr.Length-idx];
+            float t;
+            for(uint i=idx; i<arr.Length; i++)
+                dt[i-idx] = ((float.TryParse(arr[i],out t))) ? t : 0.0f;
+            return dt;
+        }
 
+        private static ObjIndex[] ConvertArrayToIndex(string[] arr, uint idx)
+        {
+            ObjIndex[] dt = new ObjIndex[arr.Length-idx];
+            uint[] v = new uint[3];
+            for(uint i=0; i<3; i++)
+                v[i] = 0;
+            for(uint i=idx; i<arr.Length; i++)
+            {
+                string[] sv = arr[i].Split('/');
+                uint t = 0;
+                for(uint j=0; j<sv.Length && j<3; j++)
+                    v[j] = (uint.TryParse(sv[j],out t)) ? t : 0;
+                dt[i-idx] = new ObjIndex(v[0],v[1],v[2]);
+            }
+            return dt;
+        }
     }
 }

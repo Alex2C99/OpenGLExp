@@ -34,6 +34,9 @@
     <Reference Include="Microsoft.CSharp">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="NLog">
+      <HintPath>..\packages\NLog.4.3.9\lib\net40\NLog.dll</HintPath>
+    </Reference>
     <Reference Include="OpenTK, Version=2.0.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
       <HintPath>..\packages\OpenTK.2.0.0\lib\net20\OpenTK.dll</HintPath>
       <Private>True</Private>
@@ -51,10 +54,12 @@
   <ItemGroup>
     <Compile Include="GLCapsuleException.cs" />
     <Compile Include="GLObject.cs" />
+    <Compile Include="ObjFile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Shader.cs" />
     <Compile Include="ShaderProgram.cs" />
     <Compile Include="Texture.cs" />
+    <Compile Include="Vertex.cs" />
     <Compile Include="VertexArray.cs" />
     <Compile Include="VertexAttribute.cs" />
     <Compile Include="VertexBuffer.cs" />

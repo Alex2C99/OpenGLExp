@@ -51,59 +51,9 @@ void main()
         
         private const int VERTEX_ATTR_COUNT = 8;
         
-        private static readonly float[] data = {
-//           x   y   z   u, v
-            -1, -1, -1,  0, 0,
-            -1, -1,  1,  0, 1,
-             1, -1,  1,  1, 1,
-             1, -1, -1,  1, 0,
-             
-            -1,  1, -1,  0, 0,
-            -1,  1,  1,  0, 1,
-             1,  1,  1,  1, 1,
-             1,  1, -1,  1, 0,
-
-/*             
-            -1,  1, -1,  0, 0,
-            -1,  1,  1,  0, 1,
-             1,  1,  1,  1, 1,
-             1,  1, -1,  1, 0,
-
-            -1,  1, -1,  0, 0,
-            -1,  1,  1,  0, 1,
-             1,  1,  1,  1, 1,
-             1,  1, -1,  1, 0,
-
-            -1,  1, -1,  0, 0,
-            -1,  1,  1,  0, 1,
-             1,  1,  1,  1, 1,
-             1,  1, -1,  1, 0,
-
-            -1,  1, -1,  0, 0,
-            -1,  1,  1,  0, 1,
-             1,  1,  1,  1, 1,
-             1,  1, -1,  1, 0,
-*/             
-        };
+        private static Vertex[] data;
         
-        private static readonly UInt32[] indexes = {
-             0,1,2,3,
-             7,6,5,4,
-             7,3,2,6,
-             0,4,5,1,
-             4,0,3,7,
-             1,5,6,2
-        };
-        
-        private static readonly float[] colors = {
-        	1,0,0,
-        	0,1,0,
-        	0,0,1,
-        	1,1,0,
-        	1,0,1,
-        	0,1,1
-        };
-              
+        private static UInt32[] indexes;
         
         private readonly Texture tex;
         private readonly VertexArray vao;
@@ -111,15 +61,15 @@ void main()
        
         public CubeModel()
         {
-            
-            ObjFile of = new ObjFile("cube.3dobj");
-            
             vao = new VertexArray();
             shaderProgram = new ShaderProgram();
             shaderProgram.AddShader(ShaderType.VertexShader,VERT_SHADER);
             shaderProgram.AddShader(ShaderType.FragmentShader,FRAG_SHADER);
             shaderProgram.Link();
                    
+            var of = new ObjFile("cube.3dobj");
+            of.GetGeometry(out data, out indexes);
+            
             using(var vbo = new VertexBuffer(data))
             {
                 vao.AddBuffer(vbo, shaderProgram, 
@@ -128,7 +78,7 @@ void main()
                                   Name = "vPos",
                                   Size = 3,
                                   Type = VertexAttribPointerType.Float,
-                                  Stride = 5*sizeof(float),
+                                  Stride = System.Runtime.InteropServices.Marshal.SizeOf(typeof(Vertex)),
                                   Offset = 0,
                                   Norm = false
                               },
@@ -137,14 +87,14 @@ void main()
                                   Name = "vUV",
                                   Size = 2,
                                   Type = VertexAttribPointerType.Float,
-                                  Stride = 5*sizeof(float),
-                                  Offset = 3*sizeof(float),
+                                  Stride = System.Runtime.InteropServices.Marshal.SizeOf(typeof(Vertex)),
+                                  Offset = System.Runtime.InteropServices.Marshal.SizeOf(typeof(Vector3)),
                                   Norm = false
                               }
                              );
             }
         
-            tex = new Texture("brick.jpg");
+            tex = new Texture("fanera.jpg");
         }       
         
         public void Draw(Matrix4 persp, Matrix4 model)
@@ -160,7 +110,7 @@ void main()
             GL.UniformMatrix4(mdl,false, ref model);
             GL.Uniform1(tu,0);
 //            GL.Uniform3(clrs,colors.Length,colors);
-            GL.DrawElements(PrimitiveType.Quads,24,DrawElementsType.UnsignedInt,indexes);
+            GL.DrawElements(PrimitiveType.TriangleFan,indexes.Length,DrawElementsType.UnsignedInt,indexes);
             shaderProgram.Unuse();
             tex.Unbind();
             vao.Unbind();

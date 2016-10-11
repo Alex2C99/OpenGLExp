@@ -26,6 +26,21 @@ namespace GLCapsule
             this.Unbind();
         }
         
+        public VertexBuffer(Vertex[] data)
+        {
+            
+            this.Handle = GL.GenBuffer();
+            if(ErrorCode.NoError!=GL.GetError())
+                throw new GLCapsuleException("Buffer creation error");
+            Release = () => { Int32 h = this.Handle; GL.DeleteBuffers(1, ref h); };
+            this.Bind();
+            GL.BufferData(BufferTarget.ArrayBuffer,
+                          System.Runtime.InteropServices.Marshal.SizeOf(typeof(Vertex))*data.Length,
+                          data,
+                          BufferUsageHint.StaticDraw);
+            this.Unbind();
+        }
+        
         public void Bind()
         {
             GL.BindBuffer(BufferTarget.ArrayBuffer,this.Handle);

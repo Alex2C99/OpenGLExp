@@ -5,6 +5,7 @@
  * Time: 10:04
  */
 using System;
+using System.Runtime.InteropServices;
 using OpenTK;
 
 namespace GLCapsule
@@ -12,21 +13,25 @@ namespace GLCapsule
     /// <summary>
     /// Description of Vertex.
     /// </summary>
+    
+    [StructLayout(LayoutKind.Sequential)]
     public struct Vertex
     {
-        private readonly Vector3 xyz;
-        private readonly Vector2 uv;
-        private readonly Vector4 rgba;
-        
-        public Vertex(Vector3 _xyz, Vector2 _uv, Vector4 _rgba)
+        public Vector3 Xyz;
+        public Vector2 Uv;
+        public Vector3 Norm;
+
+        /*
+        public Vertex(Vector3 _xyz, Vector2 _uv, Vector3 _norm)
         {
             xyz = _xyz;
             uv = _uv;
-            rgba = _rgba;
+            norm = _norm;
         }
         
         public Vector3 Xyz { get {return xyz;} }
         public Vector2 Uv { get {return uv;} }
-        public Vector4 Rgba { get {return rgba;} }
+        public Vector3 Norm { get {return norm;} }
+*/        
     }
 }

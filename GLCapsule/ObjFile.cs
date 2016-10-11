@@ -7,64 +7,30 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using NLog;
+using OpenTK;
 
 namespace GLCapsule
 {
     /// <summary>
     /// Description of ObjLoader.
     /// </summary>
-    public class ObjFile : IEnumerable<Vertex>
+    public class ObjFile 
     {
         
         Logger logger = LogManager.GetCurrentClassLogger();
         
         private readonly char[] DELIM = {' ','\t','\r','\n'};
         
-        private class VertexEnumerator : IEnumerator<Vertex>
-        {
-            
-            private ObjFile file;
-            private int currentFace;
-            
-            public VertexEnumerator(ObjFile file)
-            {
-                this.file = file;
-                currentFace = 0;
-            }
-            
-            #region IEnumerator implementation
-            public bool MoveNext()
-            {
-                throw new NotImplementedException();
-            }
-            public void Reset()
-            {
-                throw new NotImplementedException();
-            }
-
-            object IEnumerator.Current { get { return Current; } }
-
-            #endregion
-            #region IDisposable implementation
-            public void Dispose()
-            {
-                throw new NotImplementedException();
-            }
-            #endregion
-            #region IEnumerator implementation
-            public Vertex Current { get {  throw new NotImplementedException(); } }
-            #endregion
-        }
-        
         private class ObjIndex
         {
-            private readonly uint vi;
-            private readonly uint ti;
-            private readonly uint ni;
+            private readonly int vi;
+            private readonly int ti;
+            private readonly int ni;
 
-            public ObjIndex(uint vi, uint ti, uint ni)
+            public ObjIndex(int vi, int ti, int ni)
             {
                 this.vi = vi;
                 this.ti = ti;
@@ -72,13 +38,13 @@ namespace GLCapsule
                 this.VNumber = 0;
             }
             
-            public uint Vi { get { return vi; } }
+            public int Vi { get { return vi; } }
 
-            public uint Ti { get { return ti; } }
+            public int Ti { get { return ti; } }
 
-            public uint Ni { get { return ni; } }
+            public int Ni { get { return ni; } }
 
-            public uint VNumber  { get; set; }
+            public UInt32 VNumber  { get; set; }
         }
 
         private class ObjFloatArray
@@ -89,6 +55,30 @@ namespace GLCapsule
             {
                 data = new float[dt.Length];
                 dt.CopyTo(data,0);
+            }
+            
+            public Vector3 Vec3 
+            { 
+            	get 
+            	{
+            		return new Vector3(data[0],data[1],data[2]);
+            	}
+            }
+
+            public Vector2 Vec2 
+            { 
+            	get 
+            	{
+            		return new Vector2(data[0],data[1]);
+            	}
+            }
+
+            public Vector4 Vec4 
+            { 
+            	get 
+            	{
+            		return new Vector4(data[0],data[1],data[2],data[3]);
+            	}
             }
 
             public float[] Data { get { return data; } }
@@ -146,19 +136,26 @@ namespace GLCapsule
                 }
             }
         }
-               
-        #region IEnumerable implementation
-        public IEnumerator<Vertex> GetEnumerator()
+         
+        public void GetGeometry(out Vertex[] vertx, out UInt32[] idxs)
         {
-            return new VertexEnumerator(this);
+        	var vList = new List<Vertex>();
+        	var iList = new List<UInt32>();
+        	UInt32 counter = 0;
+        	foreach(ObjIndexArray iarr in faces)
+        	{
+        		foreach(ObjIndex oi in iarr.Data)
+        		{
+        			++counter;
+        			vList.Add(new Vertex { Xyz = vertexes[oi.Vi-1].Vec3, Uv = textures[oi.Ti-1].Vec2} ); //, Norm = normals[oi.Ni-1].Vec3 } );
+        			oi.VNumber = counter;
+        			iList.Add(oi.VNumber);
+        		}
+        	}
+        	
+        	vertx = vList.ToArray();
+        	idxs = iList.ToArray();
         }
-        #endregion
-        #region IEnumerable implementation
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        {
-            return this.GetEnumerator();
-        }
-        #endregion
         
         private void ParseVertex(string s)
         {
@@ -215,22 +212,22 @@ namespace GLCapsule
             float[] dt = new float[arr.Length-idx];
             float t;
             for(uint i=idx; i<arr.Length; i++)
-                dt[i-idx] = ((float.TryParse(arr[i],out t))) ? t : 0.0f;
+                dt[i-idx] = ((float.TryParse(arr[i],NumberStyles.AllowLeadingSign|NumberStyles.AllowDecimalPoint,CultureInfo.GetCultureInfo("en-US"),out t))) ? t : 0.0f;
             return dt;
         }
 
         private static ObjIndex[] ConvertArrayToIndex(string[] arr, uint idx)
         {
             ObjIndex[] dt = new ObjIndex[arr.Length-idx];
-            uint[] v = new uint[3];
+            int[] v = new int[3];
             for(uint i=0; i<3; i++)
                 v[i] = 0;
             for(uint i=idx; i<arr.Length; i++)
             {
                 string[] sv = arr[i].Split('/');
-                uint t = 0;
+                int t = 0;
                 for(uint j=0; j<sv.Length && j<3; j++)
-                    v[j] = (uint.TryParse(sv[j],out t)) ? t : 0;
+                    v[j] = (int.TryParse(sv[j],out t)) ? t : 0;
                 dt[i-idx] = new ObjIndex(v[0],v[1],v[2]);
             }
             return dt;

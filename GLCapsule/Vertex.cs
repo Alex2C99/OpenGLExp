@@ -14,14 +14,15 @@ namespace GLCapsule
     /// Description of Vertex.
     /// </summary>
     
-    [StructLayout(LayoutKind.Sequential)]
+//    [StructLayout(LayoutKind.Sequential)]
     public struct Vertex
     {
-        public Vector3 Xyz;
-        public Vector2 Uv;
-        public Vector3 Norm;
+        public const int Size = (3 + 2 + 3) * 4;  
 
-        /*
+        private readonly Vector3 xyz;
+        private readonly Vector2 uv;
+        private readonly Vector3 norm;
+
         public Vertex(Vector3 _xyz, Vector2 _uv, Vector3 _norm)
         {
             xyz = _xyz;
@@ -32,6 +33,5 @@ namespace GLCapsule
         public Vector3 Xyz { get {return xyz;} }
         public Vector2 Uv { get {return uv;} }
         public Vector3 Norm { get {return norm;} }
-*/        
     }
 }

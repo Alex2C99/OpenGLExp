@@ -146,10 +146,10 @@ namespace GLCapsule
         	{
         		foreach(ObjIndex oi in iarr.Data)
         		{
-        			++counter;
-        			vList.Add(new Vertex { Xyz = vertexes[oi.Vi-1].Vec3, Uv = textures[oi.Ti-1].Vec2} ); //, Norm = normals[oi.Ni-1].Vec3 } );
+        			vList.Add(new Vertex(vertexes[oi.Vi-1].Vec3, textures[oi.Ti-1].Vec2, normals[oi.Ni-1].Vec3 ));
         			oi.VNumber = counter;
         			iList.Add(oi.VNumber);
+                    ++counter;
         		}
         	}
         	

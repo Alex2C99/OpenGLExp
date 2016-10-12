@@ -35,7 +35,7 @@ namespace GLCapsule
             Release = () => { Int32 h = this.Handle; GL.DeleteBuffers(1, ref h); };
             this.Bind();
             GL.BufferData(BufferTarget.ArrayBuffer,
-                          System.Runtime.InteropServices.Marshal.SizeOf(typeof(Vertex))*data.Length,
+                          Vertex.Size*data.Length,
                           data,
                           BufferUsageHint.StaticDraw);
             this.Unbind();

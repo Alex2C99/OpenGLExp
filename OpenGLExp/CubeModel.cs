@@ -78,7 +78,7 @@ void main()
                                   Name = "vPos",
                                   Size = 3,
                                   Type = VertexAttribPointerType.Float,
-                                  Stride = System.Runtime.InteropServices.Marshal.SizeOf(typeof(Vertex)),
+                                  Stride = Vertex.Size,
                                   Offset = 0,
                                   Norm = false
                               },
@@ -87,8 +87,8 @@ void main()
                                   Name = "vUV",
                                   Size = 2,
                                   Type = VertexAttribPointerType.Float,
-                                  Stride = System.Runtime.InteropServices.Marshal.SizeOf(typeof(Vertex)),
-                                  Offset = System.Runtime.InteropServices.Marshal.SizeOf(typeof(Vector3)),
+                                  Stride = Vertex.Size,
+                                  Offset = 12,
                                   Norm = false
                               }
                              );
@@ -110,7 +110,7 @@ void main()
             GL.UniformMatrix4(mdl,false, ref model);
             GL.Uniform1(tu,0);
 //            GL.Uniform3(clrs,colors.Length,colors);
-            GL.DrawElements(PrimitiveType.TriangleFan,indexes.Length,DrawElementsType.UnsignedInt,indexes);
+            GL.DrawElements(PrimitiveType.Triangles,indexes.Length,DrawElementsType.UnsignedInt,indexes);
             shaderProgram.Unuse();
             tex.Unbind();
             vao.Unbind();

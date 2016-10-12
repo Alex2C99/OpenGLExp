@@ -39,7 +39,7 @@ namespace OpenGLExp
             base.OnLoad(e);
             this.Title = "Hello OpenTK!";
             model = new CubeModel();
-            cube1 = new Cube(model, new Vector3(-0.5f,-0.5f,-10f),new Vector3(0,1,0.1f),0);
+            cube1 = new Cube(model, new Vector3(-1.5f,0f,-10f),new Vector3(0,1,0),0);
             cube2 = new Cube(model, new Vector3(2f,1f,-25f),new Vector3(-0.2f,-0.3f,-0.5f),0);
             GL.Enable(EnableCap.DepthTest);
             GL.Enable(EnableCap.Texture2D);
@@ -59,7 +59,7 @@ namespace OpenGLExp
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
             base.OnUpdateFrame(e);
-            cube1.Rotate(new Vector3(1f,0.2f,1f),MathHelper.Pi/180);
+            cube1.Rotate(new Vector3(1f,-0.5f,0f),MathHelper.Pi/180);
             cube2.Rotate(new Vector3(-1f,-0.1f,-1f),MathHelper.Pi/180);
         }
         
@@ -81,8 +81,8 @@ namespace OpenGLExp
         {
             if(null!=cube1)
                 cube1.Dispose();
-            if(null!=cube2)
-                cube2.Dispose();
+//            if(null!=cube2)
+//                cube2.Dispose();
             if(null!=model)
             	model.Dispose();
             base.Dispose();

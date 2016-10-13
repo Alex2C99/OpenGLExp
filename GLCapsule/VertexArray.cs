@@ -35,6 +35,13 @@ namespace GLCapsule
             buf.Unbind();
             this.Unbind();
         }
+       
+        public void AddIndexBuffer(IndexBuffer buf)
+        {
+            this.Bind();
+            buf.Bind();
+            this.Unbind();
+        }
         
         public void Bind()
         {

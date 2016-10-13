@@ -52,13 +52,11 @@ void main()
         
         private const int VERTEX_ATTR_COUNT = 8;
         
-        private static Vertex[] data;
-        
-        private static UInt32[] indexes;
-        
         private readonly Texture tex;
         private readonly VertexArray vao;
+        private readonly IndexBuffer ibo;
         private readonly ShaderProgram shaderProgram;
+        private int elementCount;
        
         public CubeModel()
         {
@@ -68,9 +66,15 @@ void main()
             shaderProgram.AddShader(ShaderType.FragmentShader,FRAG_SHADER);
             shaderProgram.Link();
             tex = new Texture("fanera.jpg");
-                   
+
+            Vertex[] data;
+            UInt32[] indexes;
+            
             var of = new ObjFile("cube.3dobj");
             of.GetGeometry(out data, out indexes);
+            
+            elementCount = indexes.Length;
+            ibo = new IndexBuffer(indexes);
             
             using(var vbo = new VertexBuffer(data))
             {
@@ -81,6 +85,7 @@ void main()
         public void Draw(Matrix4 persp, Matrix4 model)
         {
             vao.Bind();
+            ibo.Bind();
             tex.Bind();
             shaderProgram.Use();
             Int32 psp = GL.GetUniformLocation(shaderProgram.Handle,"proj");
@@ -91,9 +96,10 @@ void main()
             GL.UniformMatrix4(mdl,false, ref model);
             GL.Uniform1(tu,0);
 //            GL.Uniform3(clrs,colors.Length,colors);
-            GL.DrawElements(PrimitiveType.Triangles,indexes.Length,DrawElementsType.UnsignedInt,indexes);
+            GL.DrawElements(PrimitiveType.Triangles,elementCount,DrawElementsType.UnsignedInt,0);
             shaderProgram.Unuse();
             tex.Unbind();
+            ibo.Unbind();
             vao.Unbind();
         }
         

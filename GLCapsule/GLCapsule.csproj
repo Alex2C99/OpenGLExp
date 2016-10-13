@@ -55,6 +55,7 @@
     <Compile Include="GLCapsuleException.cs" />
     <Compile Include="GLObject.cs" />
     <Compile Include="ObjLoader\IndexTriple.cs" />
+    <Compile Include="ObjLoader\ObjBuilder.cs" />
     <Compile Include="ObjLoader\ObjCommand.cs" />
     <Compile Include="ObjLoader\ObjFileReader.cs" />
     <Compile Include="ObjFile.cs" />

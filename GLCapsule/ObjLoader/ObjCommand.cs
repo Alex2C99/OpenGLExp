@@ -13,10 +13,15 @@ namespace GLCapsule.ObjLoader
     /// </summary>
     public class ObjCommand<CommandParameter>
     {
+        public enum ObjCommandType { VertexData, TextureData, NormalData, IndexData,  LoadMaterial, UseMaterial}
+        
         private CommandParameter[] parameters;
         
         public ObjCommand()
         {
         }
+        
+        public ObjCommandType Type { get; private set; }
+        public CommandParameter[] Params { get { return parameters; } }
     }
 }

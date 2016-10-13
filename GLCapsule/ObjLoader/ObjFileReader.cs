@@ -25,11 +25,10 @@ namespace GLCapsule.ObjLoader
         
         public delegate void GeomeryReadEvent(ObjCommand<float> command);
         public delegate void StringReadEvent(ObjCommand<string> command);
-        public delegate void FaceReadEvent(ObjCommand<IndexTriple> command);
+        public delegate void IndexReadEvent(ObjCommand<IndexTriple> command);
         
-        public GeomeryReadEvent OnVertex { get; set; }
-        public GeomeryReadEvent OnTexture { get; set; }
-        public GeomeryReadEvent OnNormal { get; set; }
-        public FaceReadEvent    OnFace { get; set; }
+        public GeomeryReadEvent OnGeometryCommand { get; set; }
+        public IndexReadEvent   OnIndexCommand { get; set; }
+        public StringReadEvent  OnStringCommand { get; set; }
     }
 }

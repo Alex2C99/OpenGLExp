@@ -26,12 +26,21 @@ namespace OpenGLExp
         private Cube cube2;
         private Matrix4 perspective;
         
+        bool cubeRotating;
+        bool firstMouseMove;
+        
         public MainWindow(int w, int h)
             : base(w,h)
         {
+        	Point winCenter = this.PointToScreen(new Point(this.Width/2, this.Height/2));
+        	OpenTK.Input.Mouse.SetPosition(winCenter.X,winCenter.Y);
+        	
+        	cubeRotating = true;
+        	firstMouseMove = true;
             keys = new Dictionary<Key, KeyAction>();
             keys[Key.Escape] = e => this.Dispose();
             keys[Key.F12] = e => this.WindowState = (int)(WindowState.Fullscreen) - this.WindowState;
+            keys[Key.Space] = e => cubeRotating = !cubeRotating;
         }
         
         protected override void OnLoad(EventArgs e)
@@ -39,7 +48,7 @@ namespace OpenGLExp
             base.OnLoad(e);
             this.Title = "Hello OpenTK!";
             model = new CubeModel();
-            cube1 = new Cube(model, new Vector3(-1.5f,0f,-10f),new Vector3(0,1,0),0);
+            cube1 = new Cube(model, new Vector3(-1.1f,0f,-10f),new Vector3(0,1,0),0);
             cube2 = new Cube(model, new Vector3(2f,1f,-25f),new Vector3(-0.2f,-0.3f,-0.5f),0);
             GL.Enable(EnableCap.DepthTest);
             GL.Enable(EnableCap.Texture2D);
@@ -59,7 +68,8 @@ namespace OpenGLExp
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
             base.OnUpdateFrame(e);
-            cube1.Rotate(new Vector3(1f,-0.5f,0f),MathHelper.Pi/180);
+            if(cubeRotating)
+            	cube1.Rotate(new Vector3(1f,-0.5f,0f),MathHelper.Pi/180);
             cube2.Rotate(new Vector3(-1f,-0.1f,-1f),MathHelper.Pi/180);
         }
         
@@ -77,6 +87,22 @@ namespace OpenGLExp
             perspective = Matrix4.CreatePerspectiveFieldOfView(MathHelper.PiOver6, (float)this.Width / this.Height, 1.0f, 100.0f);
         }
 
+		protected override void OnMouseMove(MouseMoveEventArgs e)
+		{
+			if(firstMouseMove)
+			{
+				firstMouseMove = false;
+				return;
+			}
+			if (!cubeRotating) 
+			{
+				Vector2 move = new Vector2((float)e.YDelta / 200, (float)e.XDelta / 200);
+				Vector3 axis = new Vector3(move.X, move.Y, 0);
+				if (0 != axis.Length)
+					cube1.Rotate(axis, move.Length);
+			}
+		}
+        
         public override void Dispose()
         {
             if(null!=cube1)

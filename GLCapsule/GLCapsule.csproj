@@ -54,7 +54,12 @@
   <ItemGroup>
     <Compile Include="GLCapsuleException.cs" />
     <Compile Include="GLObject.cs" />
+    <Compile Include="ObjLoader\IndexTriple.cs" />
+    <Compile Include="ObjLoader\ObjCommand.cs" />
+    <Compile Include="ObjLoader\ObjFileReader.cs" />
     <Compile Include="ObjFile.cs" />
+    <Compile Include="ObjLoader\ObjScript.cs" />
+    <Compile Include="ObjLoader\ObjScriptBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Shader.cs" />
     <Compile Include="ShaderProgram.cs" />
@@ -67,6 +72,9 @@
   <ItemGroup>
     <None Include="OpenTK.dll.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ObjLoader" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -24,6 +24,7 @@ uniform mat4 mdl;
 
 attribute vec3 vPos;
 attribute vec2 vUV;
+attribute vec3 vNorm;
 out vec4 vs_color;
 out vec2 UV;
 
@@ -66,35 +67,15 @@ void main()
             shaderProgram.AddShader(ShaderType.VertexShader,VERT_SHADER);
             shaderProgram.AddShader(ShaderType.FragmentShader,FRAG_SHADER);
             shaderProgram.Link();
+            tex = new Texture("fanera.jpg");
                    
             var of = new ObjFile("cube.3dobj");
             of.GetGeometry(out data, out indexes);
             
             using(var vbo = new VertexBuffer(data))
             {
-                vao.AddBuffer(vbo, shaderProgram, 
-                              new VertexAttribute 
-                              {
-                                  Name = "vPos",
-                                  Size = 3,
-                                  Type = VertexAttribPointerType.Float,
-                                  Stride = Vertex.Size,
-                                  Offset = 0,
-                                  Norm = false
-                              },
-                              new VertexAttribute 
-                              {
-                                  Name = "vUV",
-                                  Size = 2,
-                                  Type = VertexAttribPointerType.Float,
-                                  Stride = Vertex.Size,
-                                  Offset = 12,
-                                  Norm = false
-                              }
-                             );
-            }
-        
-            tex = new Texture("fanera.jpg");
+                vao.AddBuffer(vbo, shaderProgram, Vertex.Attributes);
+            }        
         }       
         
         public void Draw(Matrix4 persp, Matrix4 model)

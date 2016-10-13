@@ -7,6 +7,7 @@
 using System;
 using System.Runtime.InteropServices;
 using OpenTK;
+using OpenTK.Graphics.OpenGL;
 
 namespace GLCapsule
 {
@@ -17,8 +18,6 @@ namespace GLCapsule
 //    [StructLayout(LayoutKind.Sequential)]
     public struct Vertex
     {
-        public const int Size = (3 + 2 + 3) * 4;  
-
         private readonly Vector3 xyz;
         private readonly Vector2 uv;
         private readonly Vector3 norm;
@@ -28,6 +27,43 @@ namespace GLCapsule
             xyz = _xyz;
             uv = _uv;
             norm = _norm;
+        }
+
+        public static int Size { get { return(3 + 2 + 3) * sizeof(float); } }
+        
+        public static VertexAttribute[] Attributes 
+        {
+            get 
+            {
+                return new [] { new VertexAttribute
+                              {
+                                  Name = "vPos",
+                                  Size = 3,
+                                  Type = VertexAttribPointerType.Float,
+                                  Stride = Vertex.Size,
+                                  Offset = 0,
+                                  Norm = false
+                              },
+                              new VertexAttribute 
+                              {
+                                  Name = "vUV",
+                                  Size = 2,
+                                  Type = VertexAttribPointerType.Float,
+                                  Stride = Vertex.Size,
+                                  Offset = 3*sizeof(float),
+                                  Norm = false
+                              },
+                              new VertexAttribute
+                              {
+                                  Name = "vNorm",
+                                  Size = 3,
+                                  Type = VertexAttribPointerType.Float,
+                                  Stride = Vertex.Size,
+                                  Offset = 5*sizeof(float),
+                                  Norm = false
+                              }
+                };
+            }
         }
         
         public Vector3 Xyz { get {return xyz;} }

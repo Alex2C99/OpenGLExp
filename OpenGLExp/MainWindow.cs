@@ -18,6 +18,9 @@ namespace OpenGLExp
     /// </summary>
     public class MainWindow : GameWindow
     {
+        public const float EPSILON = 0.0000000001f;
+
+        
         private delegate void KeyAction(KeyboardKeyEventArgs e);
         private readonly Dictionary<Key,KeyAction> keys;
         
@@ -27,7 +30,6 @@ namespace OpenGLExp
         private Matrix4 perspective;
         
         bool cubeRotating;
-        bool firstMouseMove;
         
         public MainWindow(int w, int h)
             : base(w,h)
@@ -35,8 +37,7 @@ namespace OpenGLExp
         	Point winCenter = this.PointToScreen(new Point(this.Width/2, this.Height/2));
         	OpenTK.Input.Mouse.SetPosition(winCenter.X,winCenter.Y);
         	
-        	cubeRotating = true;
-        	firstMouseMove = true;
+        	cubeRotating = false;
             keys = new Dictionary<Key, KeyAction>();
             keys[Key.Escape] = e => this.Dispose();
             keys[Key.F12] = e => this.WindowState = (int)(WindowState.Fullscreen) - this.WindowState;
@@ -89,17 +90,12 @@ namespace OpenGLExp
 
 		protected override void OnMouseMove(MouseMoveEventArgs e)
 		{
-			if(firstMouseMove)
-			{
-				firstMouseMove = false;
-				return;
-			}
-			if (!cubeRotating) 
+		    if (!cubeRotating && e.Mouse.IsButtonDown(MouseButton.Left))
 			{
 				Vector2 move = new Vector2((float)e.YDelta / 200, (float)e.XDelta / 200);
 				Vector3 axis = new Vector3(move.X, move.Y, 0);
-				if (0 != axis.Length)
-					cube1.Rotate(axis, move.Length);
+                if (Math.Abs(axis.Length) > EPSILON)
+                    cube1.Rotate(axis, move.Length);
 			}
 		}
         

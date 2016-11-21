@@ -23,6 +23,11 @@ namespace GLCapsule.ObjLoader
         {
         }
         
+        public void Load()
+        {
+            
+        }
+        
         public delegate void GeomeryReadEvent(ObjCommand<float> command);
         public delegate void StringReadEvent(ObjCommand<string> command);
         public delegate void IndexReadEvent(ObjCommand<IndexTriple> command);

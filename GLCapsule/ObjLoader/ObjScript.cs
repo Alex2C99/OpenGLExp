@@ -13,9 +13,19 @@ namespace GLCapsule.ObjLoader
     /// </summary>
     public class ObjScript
     {
+        public delegate void DrawEvent();
+        public delegate void SetMaterialEvent();
+        
         public ObjScript()
         {
         }
         
+        public void Execute()
+        {
+            
+        }
+        
+        public DrawEvent OnDraw { get; set; }
+        public SetMaterialEvent OnMaterial { get; set; }
     }
 }

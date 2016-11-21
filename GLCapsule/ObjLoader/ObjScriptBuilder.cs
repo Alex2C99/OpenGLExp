@@ -13,8 +13,22 @@ namespace GLCapsule.ObjLoader
     /// </summary>
     public class ObjScriptBuilder
     {
+        private ObjScript script;
+        
         public ObjScriptBuilder()
         {
         }
+        
+        public void AddIndexSeq()
+        {
+            
+        }
+        
+        public void AddMaterial()
+        {
+            
+        }
+        
+        public ObjScript Script { get { return script; } }
     }
 }

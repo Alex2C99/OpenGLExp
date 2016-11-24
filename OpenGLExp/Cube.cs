@@ -25,7 +25,7 @@ namespace OpenGLExp
         {
             orientation = Matrix4.CreateFromAxisAngle(axis,angle);
             location = Matrix4.CreateTranslation(lc);
-            scale = Matrix4.CreateScale(sc);;
+            scale = Matrix4.CreateScale(sc);
             model = new CubeModel();
             ownModel = true;
         }
@@ -34,7 +34,7 @@ namespace OpenGLExp
         {
             orientation = Matrix4.CreateFromAxisAngle(axis,angle);
             location = Matrix4.CreateTranslation(lc);
-            scale = Matrix4.CreateScale(sc);;
+            scale = Matrix4.CreateScale(sc);
             model = mdl;
             ownModel = false;
         }

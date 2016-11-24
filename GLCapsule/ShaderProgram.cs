@@ -6,6 +6,7 @@
  */
 using System;
 using System.Collections.Generic;
+using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
 namespace GLCapsule
@@ -49,6 +50,22 @@ namespace GLCapsule
             {
                 GL.DetachShader(this.Handle,sh.Handle);
             }
+        }
+        
+        public void SetUniform(string name, Matrix4 mat)
+        {
+            Int32 uloc = GL.GetUniformLocation(this.Handle,name);
+            if(-1==uloc)
+                throw new GLCapsuleException("Cannot locate uniform by name "+name);
+            GL.UniformMatrix4(uloc,false, ref mat);
+        }
+        
+        public void SetUniform(string name, float value)
+        {
+            Int32 uloc = GL.GetUniformLocation(this.Handle,name);
+            if(-1==uloc)
+                throw new GLCapsuleException("Cannot locate uniform by name "+name);
+            GL.Uniform1(uloc, value);
         }
         
         public void Use()

@@ -88,14 +88,9 @@ void main()
             ibo.Bind();
             tex.Bind();
             shaderProgram.Use();
-            Int32 psp = GL.GetUniformLocation(shaderProgram.Handle,"proj");
-            Int32 mdl = GL.GetUniformLocation(shaderProgram.Handle,"mdl");
-            Int32 clrs = GL.GetUniformLocation(shaderProgram.Handle,"clrs");
-            Int32 tu = GL.GetUniformLocation(shaderProgram.Handle,"myTextureSampler");
-            GL.UniformMatrix4(psp,false, ref persp);
-            GL.UniformMatrix4(mdl,false, ref model);
-            GL.Uniform1(tu,0);
-//            GL.Uniform3(clrs,colors.Length,colors);
+            shaderProgram.SetUniform("proj",persp);
+            shaderProgram.SetUniform("mdl",model);
+            shaderProgram.SetUniform("myTextureSampler",0f);
             GL.DrawElements(PrimitiveType.Triangles,elementCount,DrawElementsType.UnsignedInt,0);
             shaderProgram.Unuse();
             tex.Unbind();
